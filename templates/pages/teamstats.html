@@ -1,0 +1,137 @@
+{% include 'parts/header.html' %}
+{% block teamstatstable %}
+<style>
+    table {
+        border-collapse: collapse;
+        border: 4px solid #ccc;
+        width: 100%;
+        margin: 25px;
+      }
+      
+      th, td {
+        text-align: center;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ccc;
+        padding: 8px;
+      }
+      
+      
+      th {
+        background-color: #f2f2f2;
+        cursor: pointer;
+      }
+      .verticaline {
+        border-right: 4px solid #ccc
+      }
+      ::-webkit-scrollbar {
+        display: none;
+    }
+    .teamstatstable {
+        overflow: auto;
+    }
+    th:first-child, td:first-child {
+        position: sticky;
+        left: 0;
+        background-color: #f2f2f2;
+      }
+    thead tr:first-child th:first-child {
+        position: static;
+      }
+      th.displaytt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    img {
+      width: 40%;
+    }
+    .thfirst {
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 25px;
+      padding-bottom: 25px;
+    }
+    tr:hover {
+      background: #cfe;
+  }
+</style>
+<div class="teamstatstable">
+<table>
+    <thead>
+        <tr>
+            <th colspan="4" class="verticaline notsticky"></th>
+            <th colspan="4" class="verticaline">temps de jeu</th>
+            <th colspan="8" class="verticaline">performance</th>
+            <th colspan="4" class="verticaline">Attendu</th>
+            <th colspan="2" class="verticaline">Progression</th>
+            <th colspan="5" class="verticaline">Par 90min</th>
+        </tr>
+        <tr>
+            <th class="thfirst">Teams</th>
+            <th>#JC</th>
+            <th>Age</th>
+            <th class="verticaline">Poss</th>
+            <th title="Matches joués par les joueur">MJ</th>
+            <th>Titulaire</th>
+            <th>Min</th>
+            <th class="verticaline" title="Minutes jouées divisées par 90">90</th>
+            <th>But</th>
+            <th title="Passes décisives">PD</th>
+            <th>P+PD</th>
+            <th title="Buts sans les pénaltys">B-PénM</th>
+            <th title="Pénaltys marqués">PénM</th>
+            <th title="Pénaltys tirés">PénT</th>
+            <th title="Carton jaune">CJ</th>
+            <th class="verticaline" title="Carton rouge">CR</th>
+            <th title="Expected Goals (avec les pénaltys maissans les tirs au buts)">xG</th>
+            <th "Expected Goals (sans les pénaltys)">npxG</th>
+            <th title="Buts assistés attendus">xAG</th>
+            <th class="verticaline" title="Buts attendus hors penalty plus buts assistés.">npxG+xAG</th>
+            <th title="Possession progressives. Les possessions qui rapprochent le ballon de la ligne de but adverse d’au moins 9 mètres par rapport à l’endroit le plus éloigné où le ballon se trouvait lors des six dernières passes, ou bien toute possession au sein de la surface de réparation. Exclut les possessions qui sont mises en échec dans la moitié défensive du terrain">PrgC</th>
+            <th class="verticaline" title="Passe progressives. Les passes réussies qui rapprochent le ballon de la ligne de but adverse d’au moins 9 mètres par rapport à l’endroit le plus éloigné où le ballon se trouvait lors des six dernières passes, ou bien toute passe réussie dans la surface de réparation. Ne concerne pas les passes tirées depuis la zone de défense (40 % du terrain à partir du but)">PrgP</th>
+            <th title="Buts marqués par 90 minutes">Buts</th>
+            <th title="Passes décisives par 90 minutes">PD</th>
+            <th title="Buts + Passes décisives/90">B+PD</th>
+            <th title="Buts (sans les pénaltys)/90">B-PénM</th>
+            <th class="verticaline" title="Buts (sans les pénaltys) + Passes décisives.">B+PD-PénM</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            <th class="displaytt"><img src="{{ row.team_image }}"></img><p>{{ row.team_name }}</p></th>
+            <td>{{ row.JC}}</td>
+            <td>{{ row.Age }}</td>
+            <td class="verticaline">{{ row.Poss }}</td>
+            <td>{{ row.Mj }}</td>
+            <td>{{ row.Titulaire }}</td>
+            <td>{{ row.Min }}</td>
+            <td class="verticaline">{{ row.Mindivby90 }}</td>
+            <td>{{ row.Buts }}</td>
+            <td>{{ row.PD }}</td>
+            <td>{{ row.BPD }}</td>
+            <td>{{ row.BPenM }}</td>
+            <td>{{ row.PenM }}</td>
+            <td>{{ row.PenT }}</td>
+            <td>{{ row.CJ }}</td>
+            <td class="verticaline">{{ row.CR}}</td>
+            <td>{{ row.xG }}</td>
+            <td>{{ row.npxG }}</td>
+            <td>{{ row.xAG }}</td>
+            <td class="verticaline">{{ row.npxG_xAG }}</td>
+            <td>{{ row.PrgC }}</td>
+            <td class="verticaline">{{ row.PrgP }}</td>
+            <td>{{ row.Butby90 }}</td>
+            <td>{{ row.PDby90 }}</td>
+            <td>{{ row.BPDby90 }}</td>
+            <td>{{ row.BPenMby90 }}</td>
+            <td class="verticaline">{{ row.BPDPenMby90 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock teamstatstable %}
+{% include 'parts/footer.html' %}

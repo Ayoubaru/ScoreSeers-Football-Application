@@ -1,0 +1,544 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/swipe.css' %}">
+
+{% include 'parts/header.html'%}
+
+{% block banner %}
+  <style>
+    .banner {
+      position: relative;
+      margin: 20px 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.2);  /* Lighter background */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .banner .banner_img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;  /* Slightly less transparent */
+      object-fit: cover;
+      filter: contrast(1.1) brightness(0.9);
+    }
+
+    .banner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.5) 100%
+      );
+      pointer-events: none;
+    }
+
+    .banner .banner_btn {
+      position: absolute;
+      top: 88%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 12px 35px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);  /* Subtle inner glow */
+      text-decoration: none;
+      z-index: 1;
+      backdrop-filter: blur(5px);
+    }
+
+    .banner .banner_btn:hover {
+      transform: translate(-50%, -52%);
+      box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, #45a049, #4CAF50);
+    }
+
+    .banner .banner_btn:active {
+      transform: translate(-50%, -50%);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .banner {
+        margin: 10px 15px;
+      }
+    }
+
+    .slider {
+      margin: 20px auto;
+      overflow: hidden;
+      padding: 20px 0;
+      max-width: 1400px;
+      position: relative;
+      height: 320px;
+    }
+
+    .slider__content {
+      display: flex;
+      gap: 25px;
+      position: absolute;
+      left: 0;
+      animation: slideShow 40s linear infinite;
+    }
+
+    .slider__item {
+      position: relative;
+      min-width: 400px;
+      height: 280px;
+      margin: 0 15px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .slider__item:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.15);
+    }
+
+    .slider__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.95);
+      transition: transform 0.5s ease;
+    }
+
+    .slider__item:hover .slider__image {
+      transform: scale(1.1);
+    }
+
+    .slider__info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 25px;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.5) 50%,
+        transparent 100%
+      );
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .slider__item:hover .slider__info {
+      transform: translateY(-5px);
+    }
+
+    .slider__info h2 {
+      margin: 0;
+      font-size: 1.2em;
+      font-weight: 600;
+      line-height: 1.4;
+      color: white;
+    }
+
+    .slider__info h2 a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .slider__info h2 a:hover {
+      color: #4CAF50;
+    }
+
+    @keyframes slideShow {
+      0% {
+        left: 0;
+      }
+      100% {
+        left: -200%;
+      }
+    }
+
+    .slider__wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 0 30px;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+    }
+
+    .slider__track {
+      display: flex;
+      gap: 25px;
+      width: fit-content;
+    }
+
+    .slider:hover .slider__content {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 768px) {
+      .slider {
+        margin: 10px auto;
+        height: 300px;
+      }
+      .slider__wrapper {
+        padding: 0 15px;
+        margin-bottom: 20px;
+      }
+    }
+
+    .slider__link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+  <div class="banner">
+      <img src="{% static 'image/BANNER.png' %}" class="banner_img">
+        {% if request.user.is_authenticated %}
+        <a class="banner_btn" href="{% url 'get_pronostic' %}">Get Pronostics</a>
+        {% else %}
+        <a class="banner_btn" href="{% url 'loginpage' %}">Join Us</a>
+        {% endif %}
+  </div>
+{% endblock banner %}
+
+{% block news_swipe %}
+  <div class="slider__wrapper">
+    <div class="slider">
+      <div class="slider__content">
+        <div class="slider__track">
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/1.1.webp' %}">
+              <div class="slider__info">
+                <h2>Real Madrid can't break Betis and fall nine points behind Barcelona.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/2.webp' %}">
+              <div class="slider__info">
+                <h2>Ten-man Barcelona hang on to go 10 points clear at the top.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/3.3.webp' %}">
+              <div class="slider__info">
+                <h2>Real Betis vs Real Madrid: Predicted line-ups, kick off time.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/4.4.webp' %}">
+              <div class="slider__info">
+                <h2>Barcelona vs Valencia: Predicted line-ups, kick off time.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/1.1.webp' %}">
+              <div class="slider__info">
+                <h2>Real Madrid can't break Betis and fall nine points behind Barcelona.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/2.webp' %}">
+              <div class="slider__info">
+                <h2>Ten-man Barcelona hang on to go 10 points clear at the top.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/3.3.webp' %}">
+              <div class="slider__info">
+                <h2>Real Betis vs Real Madrid: Predicted line-ups, kick off time.</h2>
+              </div>
+            </a>
+          </div>
+          <div class="slider__item">
+            <a href="{% url 'news' %}" class="slider__link">
+              <img class="slider__image" src="{% static 'image/4.4.webp' %}">
+              <div class="slider__info">
+                <h2>Barcelona vs Valencia: Predicted line-ups, kick off time.</h2>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock news_swipe %}
+
+{% block us_div %}
+  <style>
+    .about_us_div {
+      background-color: #fff;
+      margin: 30px;
+      padding: 30px;
+      font-family: 'Arial', sans-serif;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      max-height: 400px;
+      overflow-y: auto;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+    }
+
+    .about_us_div:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .about_us_h1, .contact_us_h1 {
+      text-align: center;
+      color: #333;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .about_us_h1::after, .contact_us_h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background-color: #4CAF50;
+      border-radius: 2px;
+    }
+
+    .name_email_message {
+      background-color: #fff;
+      margin: 30px auto;
+      padding: 30px;
+      font-family: 'Arial', sans-serif;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .name_email input[type="text"],
+    .name_email input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      max-width: 400px;
+    }
+
+    .name_email input:focus,
+    .message_field textarea:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    }
+
+    .message_field textarea {
+      width: 100%;
+      min-height: 120px;
+      max-height: 200px;
+      resize: vertical;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      max-width: 400px;
+    }
+
+    .name_email label,
+    .message_field label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .name_email_message input[type="submit"] {
+      display: block;
+      margin: 20px auto 0;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+      text-transform: uppercase;
+    }
+
+    .name_email_message input[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+      background: linear-gradient(135deg, #45a049, #4CAF50);
+    }
+
+    .name_email_message input[type="submit"]:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 10px rgba(76, 175, 80, 0.2);
+    }
+
+    .name_email_message input[type="submit"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+    }
+
+    .main_div {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .main_about_us_div {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main_contact_us_div {
+      flex: 1;
+    }
+
+    .about_us_div p {
+      font-size: 1.1em;
+      margin: 0;
+      padding: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .about_us_div p::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .about_us_div p::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .about_us_div p::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    .about_us_div p::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    @media (max-width: 768px) {
+      .main_div {
+        flex-direction: column;
+      }
+      .main_about_us_div,
+      .main_contact_us_div {
+        flex: 1;
+      }
+      .about_us_div {
+        margin: 15px;
+        max-height: none;
+      }
+      .about_us_div p {
+        max-height: none;
+      }
+    }
+  </style>
+  <div class="main_div">
+  <div class="main_about_us_div">
+  <h1 class="about_us_h1">About us</h1>
+  <div class="about_us_div">
+  <p>
+    We are the team behind ScoreSeers. An app that provides the latest news, live scores, and statistics from Laliga . At our core, we prioritize the utmost respect for our users and their personal information. Our policies and practices are designed to ensure that your data is safe and secure, and we never sell or share your information with third parties.
+
+Our services are powered by advanced AI models that are trained to provide the best possible experience for you. With our AI-powered features, you can stay up-to-date on the latest scores, get personalized news and recommendations, and more. We're passionate about football, and we're dedicated to providing the best possible service to our users.
+
+Thank you for choosing our football app. We look forward to providing you with the latest news and information from the world of football.
+  </p>
+  </div>
+  </div>
+  <div class="main_contact_us_div">
+  <h1 class="contact_us_h1">Contact us</h1>
+  <script>
+    function showMessage() {
+      alert("Ur Message has been sent successfully!")
+    }
+  </script>
+  <form onsubmit="showMessage()" method="POST" class="form_contact_us" id = "contactform">
+    {% csrf_token %}
+    <center> 
+    <div class="name_email_message">
+      <div class="name_email">
+      <label for="name_contact_us">Name:</label>
+      <input type="text" id="name_contact_us" name="name_contact_us" required><br>
+      </div>
+      <div class="name_email">
+      <label for="email_contact_us">Email:</label>
+      <input type="email" id="email_contact_us" name="email_contact_us" required><br>
+      </div>
+      <div class="message_field">
+      <label for="message_contact_us">Message:</label><br>
+      <textarea id="message_contact_us" name="message_contact_us" rows="4" cols="50" required></textarea><br>
+      </div>
+      <input type="submit" name="Clients_msgs_form" value="Send">
+    </div>
+  </center>
+  </form></div>
+  </div>
+{% endblock us_div %}
+
+{% include 'parts/footer.html' %}

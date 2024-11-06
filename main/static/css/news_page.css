@@ -1,0 +1,18 @@
+.news_img {
+    width: 250px;
+    padding: 10px 0px;
+}
+.news_all {
+    display: inline-flex;
+    align-items: center;
+}
+.news_text {
+    display: block;
+    background-color: floralwhite;
+    /*margin: 30;*/
+    padding: 20;
+    font-family: cursive;
+}
+.news_text h2 {
+    margin-bottom: 15px;
+}

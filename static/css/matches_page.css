@@ -1,0 +1,22 @@
+.football-scores {
+  display: flex;
+  padding: 20px;
+}
+.football-scores div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  width: 100%;
+}
+.football-scores img {
+  width: 50px;
+  height: 50px;
+}
+.football-scores h2 {
+  margin: 10px 0;
+}
+.football-scores .vs {
+  font-size: 32px;
+  font-weight: bold;
+}

@@ -1,0 +1,73 @@
+{% include 'parts/header.html' %}
+
+<style>
+    table {
+        border-collapse: collapse;
+        border: 4px solid #ccc;
+        width: 95%;
+        margin: 25px;
+      }
+      
+      th, td {
+        text-align: center;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ccc;
+        padding: 8px;
+      }
+      
+      
+      th {
+        background-color: #f2f2f2;
+      }
+      img {
+        width: 7%;
+    }
+    td.displaytt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    tr:hover {
+        background: #cfe;
+    }
+</style>
+
+{% block standings %}
+<div class="standingstable">
+    <table>
+        <thead>
+            <tr>
+                <th>Clt</th>
+                <th class="table-column--main">Teams</th>
+                <th><abbr title="Points">Pts</abbr></th>
+                <th><abbr title="Games played">GP</abbr></th>
+                <th><abbr title="Won">W</abbr></th>
+                <th ><abbr title="Drawn">D</abbr></th>
+                <th><abbr title="Lost">L</abbr></th>
+                <th><abbr title="Goals for">F</abbr></th>
+                <th><abbr title="Goals against">A</abbr></th>
+                <th><abbr title="Goal difference">GD</abbr></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <td class="displaytt"><img src="{{row.team_image}}"></img><p>{{ row.teams }}</p></td>
+                <td>{{ row.pts }}</td>
+                <td>{{ row.gp }}</td>
+                <td>{{ row.w }}</td>
+                <td>{{ row.d }}</td>
+                <td>{{ row.l }}</td>
+                <td>{{ row.f }}</td>
+                <td>{{ row.a }}</td>
+                <td>{{ row.gd }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock standings %}
+
+{% include 'parts/footer.html' %}

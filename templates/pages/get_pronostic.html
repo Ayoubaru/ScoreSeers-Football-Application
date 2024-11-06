@@ -1,0 +1,158 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/get_pronostic_page.css' %}">
+{% include 'parts/header.html'%}
+
+{% block main_content %}
+    <style>
+        .football-scores {
+            margin: 20px;
+            background-color: #dbdbdb;
+            position: relative;
+            transition: background-color 0.5s, transform 0.2s;
+        }
+        .football-scores:hover {
+            background-color: #bdf2f7;
+            transform: scale(1.02);
+        }
+        .football-scores:hover .team1 h2,
+        .football-scores:hover .team2 h2,
+        .football-scores:hover .team1 p,
+        .football-scores:hover .team2 p {
+            filter: blur(2px);
+            transition: 0.5s;
+        }
+        .football-scores .vs {
+            margin-top: 50px;
+            transition: 0.5s;
+        }
+        .football-scores:hover .vs {
+            opacity: 0;
+            transition: 0.5s;
+        }
+        .football-scores:hover .get-pronostics {
+            opacity: 1;
+            transition: opacity 0.2s 0.2s;
+        }
+        .get-pronostics {
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 20px;
+            background-color: transparent;
+            color: black;
+            cursor: pointer;
+            border-radius: 15px;
+            z-index: 1;
+            text-align: center;
+        }
+        .football-scores:hover .team1 img,
+        .football-scores:hover .team2 img {
+            filter: none;
+            transition: 0.5s;
+        }
+    </style>
+    {% for x in data %}
+    <a href="#" class="football-scores" onclick="getPrediction(event,'{{ x.ht_code }}', '{{ x.at_code }}', '{{ x.home_team }}', '{{ x.home_team_images }}', '{{ x.away_team }}', '{{ x.away_team_images }}')">
+      <div class="team1">
+        <img src="{{ x.home_team_images }}" alt="Team 1 Logo">
+        <h2>{{ x.home_team }}</h2>
+        <p>Stadium: {{ x.stadium }}</p>
+      </div>
+      <div class="vs">vs</div>
+      <div class="team2">
+        <img src="{{ x.away_team_images }}" alt="Team 2 Logo">
+        <h2>{{ x.away_team }}</h2>
+        <p>Time: {{ x.match_time }}</p>
+      </div>
+      <div class="get-pronostics"><b>Get Pronostics</b></div>
+    </a>
+  {% endfor %}
+  
+    
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    
+<script>
+    function getPrediction(event, ht_code, at_code, home_team, home_team_images, away_team, away_team_images) {
+  event.preventDefault();
+  
+  // display a popup while the data is being analyzed
+  Swal.fire({
+    title: 'Match Prediction',
+    icon : 'info',
+    html: '<b><i>Analyzing data...</i></b> <br> <small><i>Thank you for being patient</i></small>',
+    showConfirmButton: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  // make the Ajax call after a short delay
+  setTimeout(function() {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'get_predictions' %}",
+      data: {
+        'ht_code': ht_code,
+        'at_code': at_code,
+      },
+      success: function(response) {
+        var winner = "";
+        var accuracy = "";
+
+        if (response['prediction'] == 1) {
+          winner = home_team;
+          accuracy = "Estimated accuracy is of 71.8%";
+        } else if (response['prediction'] == 0) {
+          winner = away_team;
+          accuracy = "Estimated accuracy is of 71.8%";
+        } else {
+          alert("Prediction error");
+          return;
+        }
+
+        // create a popup with the winner and estimated accuracy
+        var popup = '<div style="text-align: center;">';
+        popup += '<img src="' + home_team_images + '" style="width: 50px; height: 50px;"> vs ';
+        popup += '<img src="' + away_team_images + '" style="width: 50px; height: 50px;"><br>';
+        popup += '<strong>' + winner + ' is expected to win</strong><br>';
+        popup += '<small>' + accuracy + '</small>';
+        popup += '</div>';
+
+        // close the loading popup and display the prediction popup
+        Swal.close();
+        Swal.fire({
+          title: "Match Prediction",
+          html: popup,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      },
+      error: function() {
+        Swal.close();
+        alert("Error fetching predictions");
+      }
+    });
+  }, 2700);
+}
+
+
+
+</script>
+    
+     <!-- Include SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+
+<!-- Include SweetAlert2 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js"></script>
+               
+<!--include the Jquery's ajax API-->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{% endblock main_content %}
+
+{% include 'parts/footer.html'%}

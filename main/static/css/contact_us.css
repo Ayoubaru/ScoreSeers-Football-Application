@@ -1,0 +1,50 @@
+.contact_us_h1 {
+    text-align: center;
+}
+.name_email {
+  display: table-cell;
+  margin: 10px;
+  padding: 10px;
+}
+.message_field {
+  margin: 10px;
+  padding: 10px;
+  
+}
+.name_email_message {
+  display: block;
+  background-color: #cbcbe9;
+  /* align-items: center; */
+  padding: 20px;
+  margin: 15px;
+}
+.form_contact_us {
+  display: block;
+}
+
+/* Style for the form inputs */
+/*.form_contact_us input[type="text"],
+.form_contact_us input[type="email"],
+.form_contact_us textarea {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}*/
+.form_contact_us input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.form_contact_us input[type="submit"]:hover {
+  background-color: #45a049;
+}
+

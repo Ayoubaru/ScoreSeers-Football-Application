@@ -1,0 +1,156 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/matches_page.css' %}">
+{% include 'parts/header.html' %}
+<style>
+    .football-scores {
+        margin : 20px;
+        background-color: #dbdbdb;
+      }
+      .football-scores div {
+        width : 100%;
+        background-color: #dbdbdb;
+      }
+      .football-scores .vs {
+        margin-top: 50px;
+      }
+
+    .options {
+        text-align: center;
+        margin-top: 20px;
+      }
+      #select-option {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+  
+  
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+  
+      button[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 20px;
+      }
+      #form-items {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-left: 70px;
+      }
+      #select-round {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      #team-select {
+        padding-right: 20px;
+      }
+      #round-select {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+</style>
+{% block matches_bloc %}
+<div class="options">
+    <div>
+    <label>Search by:</label>
+    Team  <input type="radio" name="radiobox" value="Team" onclick="document.getElementById('select-option').disabled = false; document.getElementById('select-round').disabled = true;">
+    <br>Round  <input type="radio" name="radiobox" value="Round" onclick="document.getElementById('select-round').disabled = false; document.getElementById('select-option').disabled = true;"></div>
+    <form method="POST" id="form-items">
+      {% csrf_token %}
+      <div id="team-select">
+        <label for="select-option">Choose a team:</label>
+        <select name="select-option" id="select-option" disabled>
+          <option value="Real Madrid">Real Madrid</option>
+          <option value="FC Barcelona">Barcelona</option>
+          <option value="Real Valladolid CF">Valladolid</option>
+          <option value="Real Betis">Betis</option>
+          <option value="Sevilla FC">Sevilla</option>
+          <option value="Athletic Club">Athletic Club</option>
+          <option value="Cádiz CF">Cádiz</option>
+          <option value="RC Celta">Celta Vigo</option>
+          <option value="UD Almería">Almería</option>
+          <option value="Villarreal CF">Villarreal</option>
+          <option value="Getafe CF">Getafe</option>
+          <option value="Elche CF">Elche</option>
+          <option value="Real Sociedad">Real Sociedad</option>
+          <option value="Valencia CF">Valencia</option>
+          <option value="RCD Mallorca">Mallorca</option>
+          <option value="Girona FC">Girona</option>
+          <option value="CA Osasuna">Osasuna</option>
+          <option value="Atlético de Madrid">Atlético Madrid</option>
+          <option value="Rayo Vallecano">Rayo Vallecano</option>
+          <option value="RCD Espanyol">Espanyol</option>
+        </select>
+    </div>
+    <div id="round-select">
+        <label for="select-round">Choose a round:</label>
+        <select name="select-round" id="select-round" disabled>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+        </select>
+    </div>
+      <button type="submit">Submit</button>
+    </form>
+</div>
+
+  {% for row in data %}
+    <div class="football-scores">
+        <div class="team1">
+            <img src="{{ row.home_team_images }}" alt="Team 1 Logo">
+            <h2>{{row.home_team}}</h2>
+        <p>Stadium : {{ row.stadium }}</p>
+        </div>
+        <div class="vs">{{row.home_team_score}} - {{row.away_team_score}}</div>
+        <div class="team2">
+            <img src="{{ row.away_team_images }}" alt="Team 2 Logo">
+            <h2>{{row.away_team}}</h2>
+            <p>Time : {{ row.match_time }}</p>
+        </div>
+    </div>
+  {% endfor %}
+
+
+{% endblock matches_bloc %}
+
+{% include 'parts/footer.html' %}
